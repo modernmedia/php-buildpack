@@ -17,5 +17,5 @@ function s3_upload() {
 
 function s3_download() {
   file="$1"
-  s3cmd get --verbose "s3://${S3_BUCKET}/${file}"
+  s3cmd get --verbose "s3://${S3_BUCKET}/${file}" ${file}
 }
