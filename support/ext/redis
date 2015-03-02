@@ -2,8 +2,8 @@
 
 set -e
 
-phpredis_version="2.2.5"
-curl -L "https://github.com/nicolasff/phpredis/archive/${phpredis_version}.tar.gz" \
+phpredis_version="2.2.7"
+curl -L "https://github.com/phpredis/phpredis/archive/${phpredis_version}.tar.gz" \
     | tar -xzv
 
 cd phpredis-${phpredis_version}
