@@ -41,12 +41,12 @@ function install_composer_deps() {
     mkdir -p $COMPOSER_CACHE_DIR
     mkdir -p "$target/vendor/composer/bin"
 
-    local checksum=$(curl --silent "${SWIFT_URL}/composer/composer.phar.md5")
+    local checksum=$(curl --silent "${S3_URL}/composer/composer.phar.md5")
 
     status "Vendoring Composer"
     if [ ! -f "$CACHE_DIR/composer.phar.md5" ] || [ "$(cat $CACHE_DIR/composer.phar.md5)" != "$checksum" ]; then
         echo "Updating Composer" | indent
-        curl --silent "${SWIFT_URL}/composer/composer.phar" > "$CACHE_DIR/composer.phar" | indent
+        curl --silent "${S3_URL}/composer/composer.phar" > "$CACHE_DIR/composer.phar" | indent
         chmod a+x "$CACHE_DIR/composer.phar"
         echo "$checksum" > $CACHE_DIR/composer.phar.md5
     fi
