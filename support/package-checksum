@@ -15,7 +15,7 @@ cd $(mktmpdir s3)
 
 echo "-----> Creating checksum for ${package}"
 
-swift_download "package/${package}.tgz"
+s3_download "package/${package}.tgz"
 
 md5 "package/${package}.tgz" > "package/${package}.md5"
 s3_upload "package/${package}.md5" "package"
