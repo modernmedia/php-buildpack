@@ -3,9 +3,11 @@
 zlib_version="$1"
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 
+echo $basedir
+
 source "$basedir/../conf/buildpack.conf"
 source "$basedir/utils"
-source "$basedir/swift"
+source "$basedir/s3"
 
 tempdir=$(mktmpdir zlib)
 cd $tempdir
@@ -16,4 +18,4 @@ curl -LO "http://zlib.net/zlib-${zlib_version}.tar.gz"
 mkdir zlib
 mv zlib-${zlib_version}.tar.gz zlib
 
-swift_upload "zlib/zlib-${zlib_version}.tar.gz"
+s3_upload "zlib/zlib-${zlib_version}.tar.gz"

@@ -5,17 +5,17 @@ set -e
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 source "$basedir/../conf/buildpack.conf"
 source "$basedir/utils"
-source "$basedir/swift"
+source "$basedir/s3"
 
 validate_env
 
 package="$1"
 
-cd $(mktmpdir swift)
+cd $(mktmpdir s3)
 
 echo "-----> Creating checksum for ${package}"
 
 swift_download "package/${package}.tgz"
 
 md5 "package/${package}.tgz" > "package/${package}.md5"
-swift_upload "package/${package}.md5"
+s3_upload "package/${package}.md5" "package"

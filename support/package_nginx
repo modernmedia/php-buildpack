@@ -7,7 +7,7 @@ nginx_version="$1"
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 source "$basedir/../conf/buildpack.conf"
 source "$basedir/utils"
-source "$basedir/swift"
+source "$basedir/s3"
 
 validate_env
 
@@ -39,7 +39,7 @@ tar -xzvf "pcre-${pcre_version}.tar.gz"
 
 echo "-----> Downloading dependency zlib ${zlib_version}"
 
-curl -LO "${SWIFT_URL}/zlib/zlib-${zlib_version}.tar.gz"
+curl -LO "${S3_URL}/zlib/zlib-${zlib_version}.tar.gz"
 tar -xzvf "zlib-${zlib_version}.tar.gz"
 
 echo "-----> Downloading NGINX ${nginx_version}"
@@ -58,14 +58,14 @@ pushd nginx-${nginx_version} >/dev/null && \
   make && make install && \
   popd > /dev/null
 
-echo "-----> Uploading package to Swift https://${SWIFT_URL}/package/nginx-${nginx_version}.tgz"
+echo "-----> Uploading package to S3 https://${S3_URL}/package/nginx-${nginx_version}.tgz"
 
 mkdir package
 pushd /app/vendor/nginx >/dev/null
 tar zcvf "${tempdir}/package/nginx-${nginx_version}.tgz" .
 popd >/dev/null
 
-swift_upload package/nginx-${nginx_version}.tgz
+s3_upload package/nginx-${nginx_version}.tgz
 "$basedir/manifest" nginx
 "$basedir/package-checksum" "nginx-${nginx_version}"
 

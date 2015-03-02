@@ -6,7 +6,7 @@ curl -L "https://github.com/php-memcached-dev/php-memcached/archive/${php_memcac
     | tar xzv
 
 mkdir -p /app/vendor/libmemcached
-curl "${SWIFT_URL}/package/libmemcached-1.0.18.tgz" \
+curl "${S3_URL}/package/libmemcached-1.0.18.tgz" \
     | tar xzv -C /app/vendor/libmemcached
 
 cd php-memcached-${php_memcached_version}

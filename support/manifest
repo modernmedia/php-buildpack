@@ -21,7 +21,7 @@ basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 
 source "$basedir/../conf/buildpack.conf"
 source "$basedir/utils"
-source "$basedir/swift"
+source "$basedir/s3"
 
 validate_env
 
@@ -31,7 +31,7 @@ pushd $tempdir > /dev/null
 
 echo "-----> Manifest for $manifest_type"
 
-swift list ${SWIFT_BUCKET} \
+s3cmd ls s3://${S3_BUCKET} \
     | sed "s/^package\///" \
     | grep "\.tgz$" \
     | grep "^${manifest_type}" \
@@ -45,6 +45,6 @@ swift list ${SWIFT_BUCKET} \
 cat "manifest.${manifest_type}" | indent
 
 echo
-echo "-----> Uploading manifest for ${manifest_type} to Swift"
+echo "-----> Uploading manifest for ${manifest_type} to S3"
 
-swift_upload manifest.${manifest_type}
+s3_upload manifest.${manifest_type}

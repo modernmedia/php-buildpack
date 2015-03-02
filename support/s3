@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+basedir="$( cd -P "$( dirname "$0" )" && pwd )"
+source "$basedir/../conf/buildpack.conf"
+source "$basedir/utils"
+
+validate_env
+
+function s3_upload() {
+  file="$1"
+  dest="$2"
+
+  s3cmd put --acl-public --verbose "${file}" "s3://${S3_BUCKET}/${file}"
+}
+
+function s3_download() {
+  file="$1"
+  s3cmd get --verbose download "s3://{$S3_BUCKET}/${file}"
+}

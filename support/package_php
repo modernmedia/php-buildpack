@@ -5,7 +5,7 @@ set -e
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 source "$basedir/../conf/buildpack.conf"
 source "$basedir/utils"
-source "$basedir/swift"
+source "$basedir/s3"
 
 export PATH=${basedir}/../vendor/bin:$PATH
 
@@ -28,7 +28,7 @@ cd $tempdir
 
 echo "-----> Downloading dependency zlib ${PHP_ZLIB_VERSION}"
 
-curl -LO "${SWIFT_URL}/zlib/zlib-${PHP_ZLIB_VERSION}.tar.gz"
+curl -LO "${S3_URL}/zlib/zlib-${PHP_ZLIB_VERSION}.tar.gz"
 tar -xzvf "zlib-${PHP_ZLIB_VERSION}.tar.gz"
 
 echo "-----> Downloading PHP $php_version"
@@ -57,8 +57,8 @@ if [ ! -d "/usr/include/freetype2/freetype" ] ; then
 fi
 
 mkdir -p "/app/vendor/php/zlib" "/app/vendor/libmcrypt" "/app/vendor/libicu" \
-&& curl "${SWIFT_URL}/package/libicu-51.tgz" | tar xzv -C /app/vendor/libicu \
-&& curl "${SWIFT_URL}/package/libmcrypt-${mcrypt_version}.tgz" | tar xzv -C /app/vendor/libmcrypt \
+&& curl "${S3_URL}/package/libicu-51.tgz" | tar xzv -C /app/vendor/libicu \
+&& curl "${S3_URL}/package/libmcrypt-${mcrypt_version}.tgz" | tar xzv -C /app/vendor/libmcrypt \
 && export LD_LIBRARY_PATH=/app/vendor/libicu/lib \
 && export PATH=/app/vendor/libicu/bin:$PATH \
 && mkdir -p "/app/vendor/php/etc/conf.d" \
@@ -110,9 +110,9 @@ pushd /app/vendor/php > /dev/null
 tar zcvf "${tempdir}/package/php-${php_version}.tgz" .
 popd > /dev/null
 
-echo "-----> Moving package to Swift"
+echo "-----> Moving package to S3"
 
-swift_upload "package/php-${php_version}.tgz"
+s3_upload "package/php-${php_version}.tgz"
 
 "$basedir/manifest" php
 "$basedir/package-checksum" "php-${php_version}"

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 function validate_env() {
-  if [ -z "$SWIFT_BUCKET" ]; then
-      echo "Must set SWIFT_BUCKET environment variable" >&2
+  if [ -z "$S3_BUCKET" ]; then
+      echo "Must set S3_BUCKET environment variable" >&2
       exit 1
   fi
 }

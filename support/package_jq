@@ -3,7 +3,7 @@
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 source "$basedir/../conf/buildpack.conf"
 source "$basedir/utils"
-source "$basedir/swift"
+source "$basedir/s3"
 
 tempdir=$(mktmpdir jq)
 cd $tempdir
@@ -13,4 +13,4 @@ curl -L http://stedolan.github.io/jq/download/linux64/jq > jq_bin
 
 mkdir jq
 mv jq_bin jq/jq
-swift_upload jq/jq
+s3_upload jq/jq

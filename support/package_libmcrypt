@@ -12,7 +12,7 @@ fi
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 source "$basedir/../conf/buildpack.conf"
 source "$basedir/utils"
-source "$basedir/swift"
+source "$basedir/s3"
 
 export PATH=${basedir}/../vendor/bin:$PATH
 
@@ -34,6 +34,6 @@ pushd /app/vendor/libmcrypt > /dev/null
 tar zcvf "${tempdir}/package/libmcrypt-${mcrypt_version}.tgz" .
 popd > /dev/null
 
-swift_upload package/libmcrypt-${mcrypt_version}.tgz
+s3_upload package/libmcrypt-${mcrypt_version}.tgz
 
 "$basedir/package-checksum" "libmcrypt-${mcrypt_version}"

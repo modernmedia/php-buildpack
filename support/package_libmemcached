@@ -5,7 +5,7 @@ set -e
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 source "$basedir/../conf/buildpack.conf"
 source "$basedir/utils"
-source "$basedir/swift"
+source "$basedir/s3"
 
 export PATH=${basedir}/../vendor/bin:$PATH
 
@@ -31,8 +31,8 @@ pushd /app/vendor/libmemcached
 tar zcvf ${tempdir}/package/libmemcached-${memcached_version}.tgz .
 popd
 
-echo "-----> Uploading package to Swift"
-swift_upload package/libmemcached-${memcached_version}.tgz
+echo "-----> Uploading package to S3"
+s3_upload package/libmemcached-${memcached_version}.tgz
 
 "$basedir/package-checksum" libmemcached-${memcached_version}
 
