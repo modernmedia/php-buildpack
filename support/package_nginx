@@ -37,28 +37,23 @@ echo "-----> Downloading dependency PCRE ${pcre_version}"
 curl -LO "http://sourceforge.net/projects/pcre/files/pcre/${pcre_version}/pcre-${pcre_version}.tar.gz"
 tar -xzvf "pcre-${pcre_version}.tar.gz"
 
-echo "-----> Downloading dependency zlib ${zlib_version}"
-
-curl -LO "${S3_URL}/zlib/zlib-${zlib_version}.tar.gz"
-tar -xzvf "zlib-${zlib_version}.tar.gz"
-
 echo "-----> Downloading NGINX ${nginx_version}"
 
-curl -LO "http://nginx.org/download/nginx-${nginx_version}.tar.gz"
-tar -xzvf "nginx-${nginx_version}.tar.gz"
+curl -LO "http://openresty.org/download/ngx_openresty-${nginx_version}.tar.gz"
+tar -xzvf "ngx_openresty-${nginx_version}.tar.gz"
 
 echo "-----> Uploading source to build server"
 
-pushd nginx-${nginx_version} >/dev/null && \
+pushd ngx_openresty-${nginx_version} >/dev/null && \
   ./configure \
     --prefix=/app/vendor/nginx \
     --with-http_ssl_module \
-    --with-pcre=../pcre-${pcre_version} \
-    --with-zlib=../zlib-${zlib_version} && \
+    --with-pcre-jit \
+    --with-ipv6 && \
   make && make install && \
   popd > /dev/null
 
-echo "-----> Uploading package to S3 https://${S3_URL}/package/nginx-${nginx_version}.tgz"
+echo "-----> Uploading package to S3 https://${S3_URL}/package/ngx_openresty-${nginx_version}.tgz"
 
 mkdir package
 pushd /app/vendor/nginx >/dev/null
