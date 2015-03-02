@@ -203,7 +203,7 @@ VENDORED_PHP=/app/vendor/php
 [ ! -d "$BUILD_DIR/vendor" ] && mkdir -p "$BUILD_DIR/vendor"
 
 status "Bundling NGINX ${NGINX_VERSION}"
-fetch_engine_package nginx "$NGINX_VERSION" /app/vendor | indent
+fetch_engine_package nginx "$NGINX_VERSION" /app/vendor/nginx | indent
 
 status "Bundling PHP ${PHP_VERSION}"
 
