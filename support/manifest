@@ -38,7 +38,7 @@ s3cmd ls -r s3://${S3_BUCKET} \
     | grep "${manifest_type}" \
     | grep -v -e ".md5" \
     | sed -e "s/${manifest_type}-\([0-9.]*\)\\.tgz/\\1/" \
-    | sed -e 's/.*\///'
+    | sed -e 's/.*\///' \
     > manifest.${manifest_type}
 
 cat "manifest.${manifest_type}" | indent
