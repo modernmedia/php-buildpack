@@ -44,13 +44,18 @@ tar -xzvf "ngx_openresty-${nginx_version}.tar.gz"
 
 echo "-----> Uploading source to build server"
 
-pushd ngx_openresty-${nginx_version} >/dev/null && \
-  ./configure \
-    --prefix=/app/vendor/nginx \
-    --with-http_ssl_module \
-    --with-pcre-jit \
-    --with-ipv6 && \
-  make && make install && \
+curl -LO "https://github.com/masterzen/nginx-upload-progress-module/archive/v0.9.1.tar.gz"
+tar -xzvf "v0.9.1.tar.gz"
+                                                                                                                                                                   
+pushd ngx_openresty-${nginx_version} >/dev/null && \                                                                                                               
+  ./configure \                                                                                                                                                    
+    --prefix=/app/vendor/nginx \                                                                                                                                   
+    --with-http_ssl_module \                                                                                                                                       
+    --add-module=${tempdir}/nginx-upload-progress-module-0.9.1/ \                                                                                                  
+    --with-http_mp4_module \                                                                                                                                       
+    --with-pcre-jit \                                                                                                                                              
+    --with-ipv6 && \                                                                                                                                               
+  make && make install && \                                                                                                                                        
   popd > /dev/null
 
 echo "-----> Uploading package to S3 https://${S3_URL}/package/ngx_openresty-${nginx_version}.tgz"
