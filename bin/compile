@@ -205,7 +205,7 @@ VENDORED_PHP=/app/vendor/php
 status "Bundling NGINX ${NGINX_VERSION}"
 fetch_engine_package nginx "$NGINX_VERSION" /app/vendor/nginx | indent
 
-git clone https://github.com/perusio/drupal-with-nginx /app/vendor/nginx/nginx/conf/drupal
+git clone https://github.com/perusio/drupal-with-nginx /app/vendor/nginx/nginx/conf/drupal 2> /dev/null
 
 status "Bundling PHP ${PHP_VERSION}"
 
