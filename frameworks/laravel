@@ -9,17 +9,21 @@ function requires_laravel() {
   [ -n  "$require_change" ]
 }
 
+function sets_framework_laravel() {
+  [ $(jq --raw-output '.extra.paas.framework' < "$BUILD_DIR/composer.json") == "laravel" ]
+}
+
 case "$1" in
   detect)
     if [ ! -f "$BUILD_DIR/composer.json" ]; then
       exit 1
     fi
 
-    if requires_laravel; then
-      echo "-----> Detected Laravel app"
-      exit 0
+    if requires_laravel || sets_framework_laravel; then
+        echo "-----> Detected Laravel app"
+        exit 0
     else
-      exit 1
+        exit 1
     fi
     ;;
   get-log-files)
