@@ -26,7 +26,7 @@ http {
     client_body_timeout 600s;
 
     upstream php {
-        server unix:/tmp/php-fpm.sock max_fails=3 fail_timeout=3s;
+        server unix:/tmp/php-fpm.sock max_fails=3 fail_timeout=30s;
         keepalive 16;
     }
 
@@ -64,6 +64,10 @@ http {
       text/plain
       text/x-component;
     # text/html is always compressed by HttpGzipModule
+    
+    ## For the filefield_nginx_progress module to work. From the
+    ## README. Reserve 1MB under the name 'uploads' to track uploads.
+    upload_progress uploads 1m;
 
     server {
         server_name localhost;

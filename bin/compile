@@ -149,7 +149,7 @@ PHP_INCLUDES=
 COMPILE_CMD=
 NGINX_INCLUDES=
 NEWRELIC_VERSION=4.4.5.35
-LOG_FILES=( "/app/vendor/nginx/logs/access.log" "/app/vendor/nginx/logs/error.log" "/app/vendor/php/var/log/error.log" )
+LOG_FILES=( "/app/vendor/nginx/nginx/logs/access.log" "/app/vendor/nginx/nginx/logs/error.log" "/app/vendor/php/var/log/error.log" )
 
 check_composer_syntax "$BUILD_DIR"
 check_composer_json_and_lock "$BUILD_DIR"
@@ -197,13 +197,15 @@ if echo "$NGINX_VERSION" | grep '\*' &>/dev/null; then
     NGINX_VERSION=$(echo "$AVAILABLE_NGINX_VERSIONS" | grep "^$NGINX_VERSION$" | sort -r | head -n1)
 fi
 
-VENDORED_NGINX=/app/vendor/nginx
+VENDORED_NGINX=/app/vendor/nginx/nginx
 VENDORED_PHP=/app/vendor/php
 
 [ ! -d "$BUILD_DIR/vendor" ] && mkdir -p "$BUILD_DIR/vendor"
 
 status "Bundling NGINX ${NGINX_VERSION}"
 fetch_engine_package nginx "$NGINX_VERSION" /app/vendor/nginx | indent
+
+git clone https://github.com/perusio/drupal-with-nginx /app/vendor/nginx/nginx/conf/drupal 2> /dev/null
 
 status "Bundling PHP ${PHP_VERSION}"
 
@@ -330,8 +332,8 @@ if [ -n "\$NEW_RELIC_LICENSE_KEY" ]; then
     echo "newrelic.license=\"\$NEW_RELIC_LICENSE_KEY\"" > /app/vendor/php/etc/conf.d/newrelic_license.ini
 fi
 
-erb conf/nginx.conf.erb > /app/vendor/nginx/conf/nginx.conf
-erb conf/site.conf.erb > /app/vendor/nginx/conf/site.conf
+erb conf/nginx.conf.erb > /app/vendor/nginx/nginx/conf/nginx.conf
+erb conf/site.conf.erb > /app/vendor/nginx/nginx/conf/site.conf
 
 `init_log_plex ${LOG_FILES}`
 `tail_log_plex ${LOG_FILES} ${SYS_LOG_FILES}`
@@ -342,7 +344,7 @@ erb conf/site.conf.erb > /app/vendor/nginx/conf/site.conf
 )&
 
 (
-    nginx -p "/app/vendor/nginx" -c /app/vendor/nginx/conf/nginx.conf
+    nginx -p "/app/vendor/nginx/nginx" -c /app/vendor/nginx/nginx/conf/nginx.conf
     echo "nginx" > \$pmsgr
 )&
 
