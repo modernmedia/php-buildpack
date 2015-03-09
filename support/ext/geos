@@ -10,4 +10,6 @@ export PATH=/app/vendor/php/bin:$PATH
 ./configure --enable-php
 make && make install
 cp `php-config --extension-dir`/geos.so "$EXT_DIR/geos.so"
+cp /usr/local/lib/libgeos* $EXT_DIR
+cp -R /usr/local/lib/geos $EXT_DIR
 echo "extension=geos.so" > "$PREFIX/etc/conf.d/geos.ini"
