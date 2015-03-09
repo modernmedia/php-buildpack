@@ -64,7 +64,7 @@ function install_composer_deps() {
             fi
             fetch_package "ext/$(php_api_version)/php-${ext}" "/app/vendor/php" 2>/dev/null || true | indent
             if [ "$ext" = "geos" ] ; then
-              apt-get install libgeos-3.4.2 libgeos-c1 2>/dev/null
+              apt-get install libgeos-3.4.2 libgeos-c1
             fi
         done
     fi
