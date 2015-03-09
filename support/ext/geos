@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+geos_version="3.4.2"
+
+curl -L "http://download.osgeo.org/geos/geos-${geos_version}.tar.bz2" \
+    | tar -xj
+
+cd geos-${geos_version}
+export PATH=/app/vendor/php/bin:$PATH
+./configure --enable-php
+make && make install
+cp `php-config --extension-dir`/geos.so "$EXT_DIR/geos.so"
+echo "extension=geos.so" > "$PREFIX/etc/conf.d/geos.ini"
