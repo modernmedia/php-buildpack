@@ -35,6 +35,9 @@ echo "-----> Downloading PHP $php_version"
 curl -LO "http://php.net/distributions/php-${php_version}.tar.gz"
 tar -xzvf "php-${php_version}.tar.gz"
 
+rm -rf "/app"
+mkdir -p "/app/vendor/php/etc/conf.d"
+
 install_zend_optimizer=":"
 
 if [[ "$php_version" > "5.5" ]]; then
