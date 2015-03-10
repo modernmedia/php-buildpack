@@ -37,7 +37,7 @@ tar -xzvf "php-${php_version}.tar.gz"
 
 install_zend_optimizer=":"
 
-if [[ "$php_version" =~ 5.5 ]]; then
+if [[ "$php_version" > "5.5" ]]; then
     install_zend_optimizer=$(cat << SH
     echo "zend_extension=opcache.so" >> /app/vendor/php/etc/conf.d/opcache.ini
 SH
